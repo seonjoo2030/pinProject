@@ -1,12 +1,17 @@
 {% extends 'base.html' %}
+{% load bootstrap4 %}
 
 {% block content %}
-<div>
-    <h4>login</h4>
-</div>
-<form action="", method="post">
+<div style="text-align: center; max-width: 500px; margin: 4rem auto;">
+    <div>
+        <h4>login</h4>
+    </div>
+    
+    <form action="", method="post">
     {% csrf_token %}
-    {{ form }}
-    <input type="submit" calss="btn btn-primary">
-</form> 
+    {% bootstrap_form form %}
+    <input type="submit" class="btn btn-dark rounded-pill mt-3 col-6">  <!-- col은 부모의 너비에 따라 달라진다. 12는 100%, 6은 50%-->
+                                                                                <!--mt = margin-top이고, mt-3은 기존 값의 3배-->
+    </form>
+</div> 
 {% endblock %}
