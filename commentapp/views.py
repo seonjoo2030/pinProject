@@ -1,9 +1,11 @@
+from commentapp.decorators import comment_ownership_required
+from django.utils.decorators import method_decorator
 from articleapp.models import Article
 from django.urls.base import reverse
 from commentapp.forms import CommentCreationForm
 from commentapp.models import Comment
 from django.shortcuts import render
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, DeleteView
 
 class CreateCommentView(CreateView):
     model = Comment
@@ -20,5 +22,14 @@ class CreateCommentView(CreateView):
 
     def get_success_url(self):
         return reverse('articleapp:detail', kwargs={'pk': self.object.article.pk})
-    
+
+@method_decorator(comment_ownership_required, 'get')
+@method_decorator(comment_ownership_required, 'post')
+class DeleteCommentView(DeleteView):
+    model = Comment
+    context_object_name = 'target_comment'
+    template_name = 'commentapp/delete.html' 
+
+    def get_success_url(self):
+        return reverse('articleapp:detail', kwargs={'pk': self.object.article.pk})
 # Create your views here.
